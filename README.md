@@ -1,4 +1,4 @@
-# 3D Word Cloud – FastAPI + React Three Fiber
+# 3D-Word-Cloud-Sam
 
 This project is an full-stack application that extracts keywords from any news article and visualizes them as a 3D word cloud  
 
@@ -9,10 +9,9 @@ where a user enters a URL, the backend processes the text using TF-IDF, and the 
 
 ## Tech Stack
 
-| Layer | Technology |
-|--------|-------------|
-| Frontend | React, Vite, TypeScript, React Three Fiber, TailwindCSS, Three.js|
-| Backend | FastAPI, Python , TF-IDF, trafilatura lib|
+
+ Frontend: React, Vite, TypeScript, React Three Fiber, TailwindCSS, Three.js
+ Backend:  FastAPI, Python , TF-IDF, trafilatura lib
 
 ---
 
@@ -51,13 +50,7 @@ The backend is built using **FastAPI** and handles the following:
 * Extracts top keywords using **TF-IDF**
 * Returns the results as a JSON response for frontend visualization
 
-### **API Endpoints**
 
-| Method | Endpoint   | Description                                                      |
-| ------ | ---------- | ---------------------------------------------------------------- |
-| POST   | `/analyze` | Accepts `{ "url": "<article_url>" }` and returns keyword weights |
-
----
 
 
 ## Setup
