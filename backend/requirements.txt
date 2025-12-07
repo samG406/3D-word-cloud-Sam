@@ -1,0 +1,21 @@
+# Main application dependencies
+fastapi==0.121.0
+uvicorn[standard]==0.38.0
+requests==2.32.5
+trafilatura==1.6.3
+scikit-learn==1.7.2
+numpy>=1.26.0,<2.0.0
+scipy>=1.8.0
+
+# Note: The following are automatically installed as dependencies:
+# - pydantic (required by fastapi)
+# - starlette (required by fastapi)
+# - anyio, h11, httptools, uvloop, watchfiles, websockets (required by uvicorn)
+# - certifi, charset-normalizer, idna, urllib3 (required by requests)
+# - lxml, html5lib, justext, courlan, dateparser (required by trafilatura)
+# - joblib, threadpoolctl (required by scikit-learn)
+# - typing-extensions, annotated-types, annotated-doc, pydantic-core (required by pydantic)
+# - sniffio (required by anyio)
+# - click (required by uvicorn)
+# - PyYAML (required by some packages)
+# - python-dotenv (if used for environment variables)
