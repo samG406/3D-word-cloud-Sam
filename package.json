@@ -1,0 +1,15 @@
+{
+  "name": "3d-word-cloud",
+  "private": true,
+  "scripts": {
+    "setup": "npm install && npm install --prefix frontend && npm run setup:venv && npm run setup:backend-deps",
+    "setup:venv": "node -e \"const {execSync}=require('child_process');const fs=require('fs');const path=require('path');const venvPath=path.join('backend','venv');if(fs.existsSync(venvPath)){console.log('Venv already exists, skipping creation');}else{try{execSync('python -m venv backend/venv',{stdio:'inherit'});}catch(e){try{execSync('python3 -m venv backend/venv',{stdio:'inherit'});}catch(e2){console.error('Failed to create venv. Please delete backend/venv manually and try again.');process.exit(1);}}}\"",
+    "setup:backend-deps": "node -e \"const {execSync}=require('child_process');const os=require('os');const path=require('path');const fs=require('fs');const isWin=os.platform()==='win32';const pipPath=path.resolve('backend','venv',isWin?'Scripts':'bin',isWin?'pip.exe':'pip');if(!fs.existsSync(pipPath)){console.error('pip not found at:',pipPath);process.exit(1);}execSync('\"'+pipPath+'\" install -r backend/requirements.txt',{stdio:'inherit',shell:true});\"",
+    "dev:backend": "node -e \"console.log('Starting backend server...');const {execSync}=require('child_process');const os=require('os');const path=require('path');const isWin=os.platform()==='win32';const pythonPath=path.resolve('backend','venv',isWin?'Scripts':'bin',isWin?'python.exe':'python');execSync('\"'+pythonPath+'\" -m uvicorn src.main:app --reload --port 8000',{cwd:path.resolve('backend'),stdio:'inherit',shell:true});\"",
+    "dev:frontend": "node -e \"console.log('Waiting for backend to initialize...');setTimeout(()=>{require('child_process').execSync('npm run dev --prefix frontend',{stdio:'inherit'});},3000);\"",
+    "dev": "concurrently --kill-others-on-fail --names \"backend,frontend\" --prefix-colors \"blue,green\" \"npm run dev:backend\" \"npm run dev:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
