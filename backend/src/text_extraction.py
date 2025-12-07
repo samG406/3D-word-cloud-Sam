@@ -7,11 +7,11 @@ USER_AGENT = (
 )
 
 def fetch_and_extract(url: str) -> str:
-    resp = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=15)
-    resp.raise_for_status()
+    http_response = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=15)
+    http_response.raise_for_status()
 
-    text = trafilatura.extract(
-        resp.text,
+    extracted_content = trafilatura.extract(
+        http_response.text,
         include_comments=False,
         include_tables=False,
         include_images=False,
@@ -19,9 +19,9 @@ def fetch_and_extract(url: str) -> str:
         output_format="text"
     )
     
-    if not text:
-        text = trafilatura.extract(
-            resp.content.decode('utf-8', errors='ignore'),
+    if not extracted_content:
+        extracted_content = trafilatura.extract(
+            http_response.content.decode('utf-8', errors='ignore'),
             include_comments=False,
             include_tables=False,
             include_images=False,
@@ -29,9 +29,9 @@ def fetch_and_extract(url: str) -> str:
             output_format="text"
         )
     
-    if not text:
+    if not extracted_content:
         raise ValueError("Could not extract text content from the URL")
     
-    text = text.strip().replace("\u00a0", " ")
+    cleaned_text = extracted_content.strip().replace("\u00a0", " ")
     
-    return text
+    return cleaned_text

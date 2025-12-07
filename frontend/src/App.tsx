@@ -3,9 +3,9 @@ import { Canvas } from "@react-three/fiber";
 import { WordCloudScene, GalaxyBackground } from "./components/WordCloud3D";
 import "./styles.css";
 
-type WordWeight = { word: string; weight: number };
+type KeywordData = { word: string; weight: number };
 
-async function analyze(url: string): Promise<WordWeight[]> {
+async function analyze(url: string): Promise<KeywordData[]> {
   const response = await fetch("http://localhost:8000/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -17,12 +17,12 @@ async function analyze(url: string): Promise<WordWeight[]> {
   }
 
   const data = await response.json();
-  return data.words;
+  return data.keywords;
 }
 
 export default function App() {
   const [url, setUrl] = useState("");
-  const [words, setWords] = useState<WordWeight[]>([]);
+  const [keywords, setKeywords] = useState<KeywordData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,7 +31,7 @@ export default function App() {
       setLoading(true);
       setError(null);
       const data = await analyze(url);
-      setWords(data);
+      setKeywords(data);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : String(err));
     } finally {
@@ -115,7 +115,7 @@ export default function App() {
       </div>
 
       <div className="relative w-full h-full pt-35 z-10">
-        <WordCloudScene words={words} />
+        <WordCloudScene words={keywords} />
       </div>
     </div>
   );

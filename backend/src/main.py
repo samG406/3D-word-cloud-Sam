@@ -1,9 +1,11 @@
+from typing import List
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
-from typing import List
-from .text_extraction import fetch_and_extract
+
 from .key import extract_keywords
+from .text_extraction import fetch_and_extract
 
 app = FastAPI(title="3D Word Cloud API", version="1.0")
 
@@ -15,33 +17,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class AnalyzeRequest(BaseModel):
+class ArticleAnalysisRequest(BaseModel):
     url: HttpUrl
 
-class WordWeight(BaseModel):
+class KeywordData(BaseModel):
     word: str
     weight: float
 
-class AnalyzeResponse(BaseModel):
-    words: List[WordWeight]
+class ArticleAnalysisResponse(BaseModel):
+    keywords: List[KeywordData]
 
-@app.get("/health")
-def health():
-    return {"status": "ok"}
-
-@app.post("/analyze", response_model=AnalyzeResponse)
-def analyze(req: AnalyzeRequest):
+@app.post("/analyze", response_model=ArticleAnalysisResponse)
+def analyze_article(request: ArticleAnalysisRequest):
     try:
-        text = fetch_and_extract(str(req.url))
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Fetch failed: {e}")
+        extracted_text = fetch_and_extract(str(request.url))
+    except Exception as error:
+        raise HTTPException(status_code=400, detail=f"Fetch failed: {error}")
 
-    if not text or len(text.split()) < 50:
+    if not extracted_text or len(extracted_text.split()) < 50:
         raise HTTPException(status_code=422, detail="Not enough article text extracted")
 
     try:
-        words = extract_keywords(text, top_k=60)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Keyword extraction failed: {e}")
+        keyword_list = extract_keywords(extracted_text, top_k=60)
+    except Exception as error:
+        raise HTTPException(status_code=500, detail=f"Keyword extraction failed: {error}")
 
-    return {"words": words}
+    return {"keywords": keyword_list}
