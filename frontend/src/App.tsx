@@ -50,7 +50,6 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen">
-      {/* Galaxy Background - Full Screen */}
       <div className="fixed inset-0 z-0">
         <Canvas camera={{ position: [0, 0, 14], fov: 45 }} style={{ width: '100%', height: '100%' }}>
           <color attach="background" args={["#0a0a1a"]} />
@@ -58,16 +57,13 @@ export default function App() {
         </Canvas>
       </div>
 
-      {/* Header Section */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-gray-700 backdrop-blur-md border-b border-[#050608]">
         <div className="px-4 py-3">
           <h1 className="text-[#abf5fc] text-center text-2xl font-bold tracking-wide">3D Word Cloud</h1>
         </div>
       </div>
 
-      {/* Controls Section */}
       <div className="fixed top-16 left-4 right-4 z-50 flex flex-wrap items-center justify-center gap-2 p-3 rounded-xl ">
-        {/* Stats */}
         <strong className="text-[#abf5fc] text-sm font-semibold whitespace-nowrap">Enter news article URL:</strong>
         <input
           value={url}
@@ -118,7 +114,6 @@ export default function App() {
         )}
       </div>
 
-      {/* Canvas Section */}
       <div className="relative w-full h-full pt-35 z-10">
         <WordCloudScene words={words} />
       </div>
